@@ -18,21 +18,31 @@ export const authOptions: NextAuthOptions = {
             id: "1",
             name: "Admin",
             email: "admin@test.com",
+            password: "admin",
             role: "admin",
           },
           {
             id: "2",
             name: "User",
             email: "user@test.com",
+            password: "admin",
             role: "user",
           },
         ];
 
-        const user = users.find((u) => u.email === credentials.email);
+        const user = users.find(
+          (u) =>
+            u.email === credentials.email && u.password === credentials.password
+        );
 
         if (!user) return null;
 
-        return user;
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],
