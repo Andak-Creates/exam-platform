@@ -1,16 +1,17 @@
+import Image from "next/image";
 import Link from "next/link";
-import { FaGraduationCap } from "react-icons/fa";
+import Logo from "@/public/invertedLogo.png";
 
 const page = () => {
   return (
-    <div className="h-screen w-full flex items-center justify-center px-7">
+    <div className="h-screen w-full flex items-center justify-center px-7 md:px-40 max-w-225 mx-auto">
       {/* Login in */}
       <div className="bg-white py-10 px-2.5 text-center rounded-md shadow-md w-full">
         {/* Logo */}
-        <div className="w-fit p-3 rounded-full bg-[#8B2E2E] mx-auto">
-          <FaGraduationCap size={40} color="white" />
+        <div className="relative w-20 h-20 mx-auto mb-4 bg-[#8B2E2E] rounded-full flex items-center justify-center">
+          <Image src={Logo} alt="Logo" className="object-contain" fill />
         </div>
-        <h1 className="text-[30px] font-semibold">Welcome To ExamPro</h1>
+        <h1 className="text-[30px] font-semibold">Welcome To Nocho</h1>
         <p>Create an account to get started with us now</p>
 
         {/* Log in form */}

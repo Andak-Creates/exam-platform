@@ -5,9 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaGraduationCap } from "react-icons/fa";
+import Logo from "@/public/invertedLogo.png"; // Static import for Next.js Image
 
-const page = () => {
+const LoginPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,23 +34,24 @@ const page = () => {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center px-7">
-      {/* Login in */}
-      <div className="bg-white py-10 px-2.5 text-center rounded-md shadow-md w-full">
+    <div className="h-screen w-full flex items-center justify-center px-7 md:px-40 max-w-225 mx-auto">
+      <div className="bg-white py-10 px-5 text-center rounded-md shadow-md w-full">
         {/* Logo */}
-        <div className="relative w-16 h-16 rounded-full bg-[#8B2E2E] mx-auto flex items-center justify-center">
-          <img src="/invertedLogo.png" alt="Logo" className="object-contain" />
+        <div className="relative w-20 h-20 mx-auto mb-4 bg-[#8B2E2E] rounded-full flex items-center justify-center">
+          <Image src={Logo} alt="Logo" className="object-contain" fill />
         </div>
+
         <h1 className="text-[30px] font-semibold">Welcome Back</h1>
-        <p>Enter your credentials to access your exams</p>
+        <p className="mb-5">Enter your credentials to access your exams</p>
 
         {/* Log in form */}
         <form onSubmit={handleLogin}>
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {error && (
+            <p className="text-red-500 text-sm text-center mb-2">{error}</p>
+          )}
 
-          <div className="my-2.5 flex flex-col gap-4 px-4">
-            {/* email address */}
-            <div className="flex flex-col gap-0.5 text-left">
+          <div className="flex flex-col gap-4 mb-5 px-4">
+            <div className="flex flex-col gap-1 text-left">
               <label htmlFor="email">Email Address</label>
               <input
                 type="text"
@@ -62,14 +63,12 @@ const page = () => {
               />
             </div>
 
-            {/* Password */}
-            <div className="flex flex-col gap-0.5 text-left">
-              <label
-                htmlFor="password"
-                className="w-full flex flex-row justify-between"
-              >
+            <div className="flex flex-col gap-1 text-left">
+              <label htmlFor="password" className="w-full flex justify-between">
                 Password{" "}
-                <span className="text-[#8B2E2E]">forgot password?</span>
+                <span className="text-[#8B2E2E] cursor-pointer">
+                  forgot password?
+                </span>
               </label>
               <input
                 type="password"
@@ -87,17 +86,15 @@ const page = () => {
           </div>
         </form>
 
-        <div>
-          <p>
-            Don&apos;t have an account?{" "}
-            <Link href={"/register"}>
-              <span className="font-bold redtext cursor-pointer">Sign Up</span>
-            </Link>
-          </p>
-        </div>
+        <p>
+          Don&apos;t have an account?{" "}
+          <Link href={"/register"}>
+            <span className="font-bold redtext cursor-pointer">Sign Up</span>
+          </Link>
+        </p>
       </div>
     </div>
   );
 };
 
-export default page;
+export default LoginPage;

@@ -3,13 +3,13 @@ import { FaCalendar, FaPlusCircle, FaRegClock } from "react-icons/fa";
 import { FaMoneyBills, FaNairaSign } from "react-icons/fa6";
 import { HiOutlineBolt } from "react-icons/hi2";
 
-const page = () => {
+const UserOverviewPage = () => {
   return (
     <div className="w-full mb-25 text-white max-w-300 lg:mx-auto">
       {/* Wallet balance and stats */}
       <div className=" flex flex-col md:flex-row md:w-[95%] lg:w-[90%] mx-auto mt-6 gap-4">
         {/* Wallet balance */}
-        <div className="w-full md:w-[55%] relative md:h-auto flex flex-col items-start h-64  bg-linear-to-r from-[#8B1E1E] to-[#250808] rounded-2xl p-5">
+        <div className="w-full md:w-[55%] relative md:h-auto flex flex-col items-start h-64  bg-linear-to-r from-[#8B1E1E] to-[#250808] rounded-3xl p-5">
           {/* bank and status */}
           <div className="flex w-full flex-row justify-between items-center">
             <div className="flex flex-row gap-1 items-center text-[#aaa]">
@@ -47,7 +47,7 @@ const page = () => {
 
         {/* Stats section */}
         <div className=" border-4 border-dashed border-green-700 flex-1  p-2">
-          <div className="bg-[#0a0e14] w-full h-full rounded-lg p-4">
+          <div className="bg-[#ffffff10] border border-[#ffffff20] rounded-3xl shadow-lg w-full h-full  p-4">
             {/* title and lightening */}
             <div className="flex flex-row gap-2">
               <HiOutlineBolt size={30} color="#F97316" />
@@ -89,7 +89,7 @@ const page = () => {
       </div>
 
       {/* Started exams */}
-      <div className="w-full h-auto bg-[#0a0e14] flex flex-col md:flex-row md:w-[95%] lg:w-[90%] mx-auto mt-6 text-white rounded-2xl border-[0.5px] border-[#aaa] justify-between p-4 items-start md:items-center">
+      <div className="w-full h-auto bg-[#ffffff10] border border-[#ffffff20] rounded-3xl shadow-lg flex flex-col md:flex-row md:w-[95%] lg:w-[90%] mx-auto mt-6 text-white  justify-between p-4 items-start md:items-center">
         {/* Exam details */}
         <div className="flex gap-4 items-center w-full md:w-[70%] ">
           {/* time icon */}
@@ -132,7 +132,7 @@ const page = () => {
         {/* Exams */}
         <div className="mt-5 flex flex-row flex-wrap  gap-10">
           {/* exam card 1 */}
-          <div className=" bg-white rounded-lg shadow-md overflow-hidden border w-full md:w-70">
+          <div className=" rounded-3xl shadow-md overflow-hidden w-full md:w-70 cursor-pointer border border-[#ffffff30] ">
             {/* Image + Tag */}
             <div className="relative w-full  h-fit">
               <img
@@ -175,14 +175,14 @@ const page = () => {
               </div>
 
               {/* Register Button */}
-              <button className="mt-4 w-full py-2 bg-white font-semibold cursor-pointer text-black rounded-lg hover:bg-[#0a0e14] hover:text-white transition">
+              <button className="mt-4 w-full py-2 bg-white font-semibold cursor-pointer text-black rounded-lg hover:bg-[#ffffff10] hover:text-white transition">
                 Register Now
               </button>
             </div>
           </div>
 
           {/* exam card 2 */}
-          <div className="md:w-70 bg-white rounded-lg shadow-md overflow-hidden border">
+          <div className="rounded-3xl shadow-md overflow-hidden w-full md:w-70 cursor-pointer border border-[#ffffff30]">
             {/* Image + Tag */}
             <div className="relative w-full  h-fit">
               <img
@@ -225,7 +225,7 @@ const page = () => {
               </div>
 
               {/* Register Button */}
-              <button className="mt-4 w-full py-2 bg-white font-semibold cursor-pointer text-black rounded-lg hover:bg-[#0a0e14] hover:text-white transition">
+              <button className="mt-4 w-full py-2 bg-white font-semibold cursor-pointer text-black rounded-lg hover:bg-[#ffffff10] hover:text-white transition">
                 Register Now
               </button>
             </div>
@@ -236,4 +236,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default UserOverviewPage;

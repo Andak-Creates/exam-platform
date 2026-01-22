@@ -4,11 +4,11 @@ import { getToken } from "next-auth/jwt";
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req });
-
   const path = req.nextUrl.pathname;
 
   // Public routes
   if (
+    path === "/" || // 👈 allow landing page
     path.startsWith("/login") ||
     path.startsWith("/register") ||
     path.startsWith("/api/auth")
@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Not logged in
+  // Not logged in -> redirect to login
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
@@ -29,7 +29,6 @@ export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
-// Check this birch
 export const config = {
   matcher: ["/((?!_next|favicon.ico).*)"],
 };
