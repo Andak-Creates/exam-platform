@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { FaNairaSign, FaTrophy, FaWallet } from "react-icons/fa6";
-import { MdOutlineAccountBalanceWallet, MdOutlineReplay } from "react-icons/md";
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 
 const ResultPage = ({
   searchParams,
@@ -107,18 +108,15 @@ const ResultPage = ({
 
         {/* Action Buttons */}
         <div className="mt-5 flex flex-col gap-5">
-          <button className="bg-white py-3 px-4 text-[#8B1E1E] font-semibold rounded-2xl flex flex-row items-center justify-center gap-2 mx-auto cursor-pointer">
-            <span>
-              <MdOutlineReplay />{" "}
-            </span>{" "}
-            Play Again
-          </button>
-          <button className="bg-[#00000020] py-3 px-4 text-white font-semibold rounded-2xl flex flex-row items-center justify-center gap-2 mx-auto border border-[#aaa] cursor-pointer">
+          <Link
+            href={"/dashboard"}
+            className="bg-[#00000020] py-3 px-4 text-white font-semibold rounded-2xl flex flex-row items-center justify-center gap-2 mx-auto border border-[#aaa] cursor-pointer"
+          >
             <span>
               <MdOutlineAccountBalanceWallet />{" "}
             </span>{" "}
-            View Wallet
-          </button>
+            Back To Dashboard
+          </Link>
         </div>
       </div>
 

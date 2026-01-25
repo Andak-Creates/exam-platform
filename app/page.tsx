@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Logo from "@/public/invertedLogo.png";
 import Link from "next/link";
-import { FaTrophy, FaGraduationCap, FaWallet } from "react-icons/fa6";
+import { FaGraduationCap } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
 
 export default function Page() {
@@ -20,7 +20,7 @@ export default function Page() {
   }, [session, router]);
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black px-4">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-black px-4 pb-10 mt-5">
       {/* Top Header */}
       <header className="w-full fixed top-0 left-0 flex items-center justify-between gap-5 bg-black text-white p-4 border-b border-gray-700 z-50">
         {/* Logo Section */}
@@ -40,9 +40,9 @@ export default function Page() {
       </header>
 
       {/* Hero Section */}
-      <section className="mt-20 md:mt-28 w-full md:w-[95%] lg:w-[90%] bg-gradient-to-r from-[#8B1E1E] to-[#250808] rounded-3xl shadow-xl p-8 md:p-16 flex flex-col items-center gap-6 text-center">
+      <section className="mt-20 md:mt-28 w-full md:w-[95%] lg:w-[90%] bg-linear-to-r from-[#8B1E1E] to-[#250808] rounded-2xl shadow-xl p-8 md:p-16 flex flex-col items-center gap-6 text-center ">
         {/* Logo */}
-        <div className="flex justify-center items-center relative w-70 h-30">
+        <div className="flex justify-center items-center relative w-90 h-40">
           <Image
             src={Logo}
             alt="logo"
@@ -50,11 +50,7 @@ export default function Page() {
           />
         </div>
 
-        <h2 className="text-white text-4xl md:text-5xl font-extrabold -mt-8">
-          Elevate Your Potential
-        </h2>
-
-        <p className="text-[#d7d6d6] text-lg md:text-xl max-w-3xl">
+        <p className=" text-[#aaa] max-w-3xl -mt-10">
           Compete in world-class academic challenges, earn recognition, and win
           prizes by passing our curated exams.
         </p>
@@ -74,7 +70,7 @@ export default function Page() {
       </section>
 
       {/* Feature Section */}
-      <section className="mt-12 w-full md:w-[95%] lg:w-[90%] grid grid-cols-1 md:grid-cols-3 gap-6 text-white">
+      <section className="mt-5 md:mt-12 w-full md:w-[95%] lg:w-[90%] border-4 border-dashed border-green-700 p-4 text-white">
         <div className="flex flex-col items-center gap-4 bg-[#8B1E1E10] border border-[#ffffff20] rounded-2xl p-6 shadow-md hover:shadow-lg transition">
           <FaGraduationCap size={40} className="text-[#8B1E1E]" />
           <h3 className="text-xl font-semibold">World-Class Exams</h3>
@@ -83,28 +79,7 @@ export default function Page() {
             knowledge.
           </p>
         </div>
-
-        <div className="flex flex-col items-center gap-4 bg-[#8B1E1E10] border border-[#ffffff20] rounded-2xl p-6 shadow-md hover:shadow-lg transition">
-          <FaTrophy size={40} className="text-yellow-400" />
-          <h3 className="text-xl font-semibold">Win Prizes</h3>
-          <p className="text-[#aaa] text-center">
-            Achieve top ranks and claim exciting cash prizes and rewards.
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center gap-4 bg-[#8B1E1E10] border border-[#ffffff20] rounded-2xl p-6 shadow-md hover:shadow-lg transition">
-          <FaWallet size={40} className="text-green-400" />
-          <h3 className="text-xl font-semibold">Manage Your Wallet</h3>
-          <p className="text-[#aaa] text-center">
-            Keep track of your rewards and easily manage your wallet within the
-            platform.
-          </p>
-        </div>
       </section>
-
-      <footer className="mt-16 mb-6 text-[#aaa] text-sm">
-        &copy; {new Date().getFullYear()} Nocho. All rights reserved.
-      </footer>
     </div>
   );
 }

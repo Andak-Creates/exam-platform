@@ -37,3 +37,29 @@ body {
 .darkmodebg {
   @apply bg-[#0F172A];
 }
+
+.darkCard {
+  @apply bg-[#ffffff10] border border-[#ffffff20] rounded-3xl;
+}
+
+.redCard {
+  @apply bg-[#8B2E2E] border border-[#ffffff20] rounded-3xl;
+}
+
+.gradientCard {
+  @apply bg-linear-to-r from-[#8B1E1E] to-[#250808] border border-[#ffffff94] rounded-3xl;
+}
+
+.fadeInput {
+  @apply bg-[#00000052] border border-[#ffffff20];
+}
+
+/* Hide scrollbar but allow scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}

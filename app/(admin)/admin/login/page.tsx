@@ -2,12 +2,11 @@
 
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Logo from "@/public/invertedLogo.png";
 
-const LoginPage = () => {
+const AdminLoginPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,19 +18,19 @@ const LoginPage = () => {
     const res = await signIn("credentials", {
       email,
       password,
-      userType: "user", // 👈 ADD THIS - specifies user login
+      userType: "admin", // 👈 Specifies admin login
       redirect: false,
     });
 
-    console.log("LOGIN RESPONSE:", res);
+    console.log("ADMIN LOGIN RESPONSE:", res);
 
     if (res?.error) {
-      setError("Invalid email or password");
+      setError("Invalid admin credentials");
       return;
     }
 
-    // Redirect to dashboard on successful login
-    router.push("/dashboard");
+    // Redirect to admin dashboard on successful login
+    router.push("/admin");
   };
 
   return (
@@ -42,8 +41,8 @@ const LoginPage = () => {
           <Image src={Logo} alt="Logo" className="object-contain" fill />
         </div>
 
-        <h1 className="text-[30px] font-semibold">Welcome Back</h1>
-        <p className="mb-5">Enter your credentials to access your exams</p>
+        <h1 className="text-[30px] font-semibold">Admin Portal</h1>
+        <p className="mb-5">Enter your admin credentials to continue</p>
 
         {/* Log in form */}
         <form onSubmit={handleLogin}>
@@ -56,7 +55,7 @@ const LoginPage = () => {
               <label htmlFor="email">Email Address</label>
               <input
                 type="text"
-                placeholder="Enter Email Address"
+                placeholder="Enter Admin Email"
                 className="bg-[#d3d3d3c2] rounded-md px-2 py-1"
                 required
                 value={email}
@@ -65,15 +64,10 @@ const LoginPage = () => {
             </div>
 
             <div className="flex flex-col gap-1 text-left">
-              <label htmlFor="password" className="w-full flex justify-between">
-                Password{" "}
-                <span className="text-[#8B2E2E] cursor-pointer">
-                  forgot password?
-                </span>
-              </label>
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
-                placeholder="Enter Password"
+                placeholder="Enter Admin Password"
                 className="bg-[#d3d3d3c2] rounded-md px-2 py-1"
                 required
                 value={password}
@@ -82,20 +76,17 @@ const LoginPage = () => {
             </div>
 
             <button className="mt-5 w-full py-2 redBg text-white rounded-lg cursor-pointer">
-              Login to Portal
+              Login to Admin Portal
             </button>
           </div>
         </form>
 
-        <p>
-          Don&apos;t have an account?{" "}
-          <Link href={"/register"}>
-            <span className="font-bold redtext cursor-pointer">Sign Up</span>
-          </Link>
+        <p className="text-sm text-gray-500 mt-4">
+          Admin access only
         </p>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;

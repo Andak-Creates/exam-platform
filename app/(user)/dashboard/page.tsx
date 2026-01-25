@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { BiSolidBank } from "react-icons/bi";
-import { FaCalendar, FaPlusCircle, FaRegClock } from "react-icons/fa";
+import { FaPlusCircle, FaRegClock } from "react-icons/fa";
 import { FaMoneyBills, FaNairaSign } from "react-icons/fa6";
 import { HiOutlineBolt } from "react-icons/hi2";
 
@@ -72,14 +73,6 @@ const UserOverviewPage = () => {
                 </span>
               </div>
 
-              {/* Global rank */}
-              <div className="flex flex-row w-full justify-between border-b-[0.5px] border-[#aaa] py-2">
-                <p>Global rank</p>
-                <span className="font-semibold text-[18px] text-[#94A3B8]">
-                  #1,204
-                </span>
-              </div>
-
               <button className="py-2 rounded-lg mt-2 bg-[#8B1E1E]">
                 View Leaderboard
               </button>
@@ -91,16 +84,16 @@ const UserOverviewPage = () => {
       {/* Started exams */}
       <div className="w-full h-auto bg-[#ffffff10] border border-[#ffffff20] rounded-3xl shadow-lg flex flex-col md:flex-row md:w-[95%] lg:w-[90%] mx-auto mt-6 text-white  justify-between p-4 items-start md:items-center">
         {/* Exam details */}
-        <div className="flex gap-4 items-center w-full md:w-[70%] ">
+        <div className="flex gap-4 items-start md:items-center w-full md:w-[70%] ">
           {/* time icon */}
-          <div className="p-2 rounded-full bg-[#FEF2F2]">
+          <div className="p-2 rounded-full bg-[#FEF2F2] hidden md:flex">
             <FaRegClock size={25} color="#8B1E1E" />
           </div>
 
           <div>
             <h2 className="text-[20px] text-white font-semibold">
               Math Olympiad Finals{" "}
-              <span className="py-1 inline-block md:ml-4 px-6 bg-green-200 text-[#0a0e14] text-[14px] rounded-full uppercase font-semibold">
+              <span className="py-1 inline-block md:ml-4 px-6 bg-green-200 text-[#0a0e14] text-[12px] my-2 md:my-0 md:text-[14px] rounded-full uppercase font-semibold">
                 In Progress
               </span>
             </h2>
@@ -117,119 +110,18 @@ const UserOverviewPage = () => {
             <FaRegClock size={25} color="#8B1E1E" />
             <p>00:45:20</p>
           </div>
-          <button className="md:w-fit w-full px-5 py-1 bg-[#8B1E1E] rounded-lg">
+          <Link
+            href={"/exams/live-exam"}
+            className="md:w-fit w-full flex items-center justify-center px-5 py-1 bg-[#8B1E1E] rounded-lg"
+          >
             Enter Exam Room
-          </button>
+          </Link>
         </div>
       </div>
 
-      {/* Upcoming Exams */}
-      <div className=" md:w-[95%] lg:w-[90%] mx-auto mt-10">
-        <h3 className="text-[18px] font-semibold">
-          Upcoming Exams <span className="text-[#aaa]">(2)</span>
-        </h3>
-
-        {/* Exams */}
-        <div className="mt-5 flex flex-row flex-wrap  gap-10">
-          {/* exam card 1 */}
-          <div className=" rounded-3xl shadow-md overflow-hidden w-full md:w-70 cursor-pointer border border-[#ffffff30] ">
-            {/* Image + Tag */}
-            <div className="relative w-full  h-fit">
-              <img
-                src="/mathpic.png"
-                alt="Exam Image"
-                className="object-cover w-full"
-              />
-              {/* Tag overlay */}
-              <span className="absolute bottom-3 left-2 bg-[#8B1E1E] text-white text-xs font-semibold px-2 py-1 rounded">
-                Physics
-              </span>
-            </div>
-
-            {/* Exam info */}
-            <div className="p-4 flex flex-col gap-2 bg-[#8B1E1E] text-white">
-              {/* Name, Date, Time */}
-              <div className="flex flex-col gap-1">
-                <h2 className="font-semibold text-lg">Physics 101 Exam</h2>
-                <div className="flex text-[#aaa] text-sm gap-2">
-                  <span className="flex flex-row gap-2 items-center">
-                    <FaCalendar size={14} color="white" /> Tomorrow,
-                  </span>
-                  <span>10:00 AM</span>
-                </div>
-              </div>
-
-              {/* Separator */}
-              <hr className="border-gray-200 my-2" />
-
-              {/* Prize Pool */}
-              <div className="flex justify-between text-sm">
-                <div>
-                  <p className="">Prize</p>
-                  <p className="font-bold text-[#0F172A]">₦5,000</p>
-                </div>
-                <div>
-                  <p className="">Entry Fee</p>
-                  <p className="font-bold text-[#0F172A]">₦50</p>
-                </div>
-              </div>
-
-              {/* Register Button */}
-              <button className="mt-4 w-full py-2 bg-white font-semibold cursor-pointer text-black rounded-lg hover:bg-[#ffffff10] hover:text-white transition">
-                Register Now
-              </button>
-            </div>
-          </div>
-
-          {/* exam card 2 */}
-          <div className="rounded-3xl shadow-md overflow-hidden w-full md:w-70 cursor-pointer border border-[#ffffff30]">
-            {/* Image + Tag */}
-            <div className="relative w-full  h-fit">
-              <img
-                src="/chempic.png"
-                alt="Exam Image"
-                className="object-cover w-full"
-              />
-              {/* Tag overlay */}
-              <span className="absolute bottom-3 left-2 bg-[#8B1E1E] text-white text-xs font-semibold px-2 py-1 rounded">
-                Chemistry
-              </span>
-            </div>
-
-            {/* Exam info */}
-            <div className="p-4 flex flex-col gap-2 bg-[#8B1E1E] text-white">
-              {/* Name, Date, Time */}
-              <div className="flex flex-col gap-1">
-                <h2 className="font-semibold text-lg">Chemistry 201 Exam</h2>
-                <div className="flex text-[#aaa] text-sm gap-2">
-                  <span className="flex flex-row gap-2 items-center">
-                    <FaCalendar size={14} color="white" /> Saturday 16/1/26,
-                  </span>
-                  <span>10:00 AM</span>
-                </div>
-              </div>
-
-              {/* Separator */}
-              <hr className="border-gray-200 my-2" />
-
-              {/* Prize Pool */}
-              <div className="flex justify-between text-sm">
-                <div>
-                  <p className="">Prize</p>
-                  <p className="font-bold text-[#0F172A]">₦5,000</p>
-                </div>
-                <div>
-                  <p className="">Entry Fee</p>
-                  <p className="font-bold text-[#0F172A]">₦50</p>
-                </div>
-              </div>
-
-              {/* Register Button */}
-              <button className="mt-4 w-full py-2 bg-white font-semibold cursor-pointer text-black rounded-lg hover:bg-[#ffffff10] hover:text-white transition">
-                Register Now
-              </button>
-            </div>
-          </div>
+      <div className=" border-4 border-dashed border-green-700 flex-1  p-2 mt-5">
+        <div className="bg-[#ffffff10] border border-[#ffffff20] rounded-3xl shadow-lg w-full h-full  p-4">
+          <p>Awaiting Content</p>
         </div>
       </div>
     </div>

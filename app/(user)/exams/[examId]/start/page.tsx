@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 const StartPage = ({ params }: { params: { examId: string } }) => {
   return (
-    <div className="min-h-screen flex justify-center bg-black text-white px-4">
+    <div className="min-h-screen flex justify-center bg-black text-white px-0">
       <div className="w-full max-w-xl bg-[#ffffff10] border border-[#ffffff20] rounded-3xl shadow-xl p-6 md:p-8 text-center">
         {/* Icon */}
         <div className="w-14 h-14 mx-auto rounded-full bg-[#8B1E1E20] flex items-center justify-center mb-4">
