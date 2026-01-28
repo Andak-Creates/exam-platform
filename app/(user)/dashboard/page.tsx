@@ -119,7 +119,7 @@ const UserOverviewPage = () => {
         </div>
       </div>
 
-      <div className=" border-4 border-dashed border-green-700 flex-1  p-2 mt-5">
+      <div className="w-full md:w-[95%] lg:w-[90%] mx-auto border-4 border-dashed border-green-700 flex-1  p-2 mt-5">
         <div className="bg-[#ffffff10] border border-[#ffffff20] rounded-3xl shadow-lg w-full h-full  p-4">
           <p>Awaiting Content</p>
         </div>

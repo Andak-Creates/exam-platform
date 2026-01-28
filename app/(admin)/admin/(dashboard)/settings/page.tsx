@@ -1,5 +1,807 @@
-const page = () => {
-  return <div>page</div>;
+"use client";
+
+import { useState } from "react";
+import {
+  FaSave,
+  FaCheckCircle,
+  FaExclamationCircle,
+  FaPlus,
+  FaTrash,
+  FaUserShield,
+  FaCog,
+  FaShieldAlt,
+  FaWallet,
+} from "react-icons/fa";
+
+// Mock data
+const mockSettings = {
+  dgbMode: "mock" as "mock" | "live",
+  rpcHost: "localhost",
+  rpcPort: 14022,
+  rpcUsername: "digibyte",
+  rpcPassword: "********",
+  confirmationsRequired: 6,
+  addressRotation: true,
+  sessionTimeout: 30,
+  maxLoginAttempts: 5,
+  maxWithdrawalPerHour: 3,
+  maxApiCallsPerMinute: 60,
+  defaultExamDuration: 60,
+  defaultPassMark: 70,
+  allowExamRetakes: true,
+  showAnswersAfterCompletion: false,
 };
 
-export default page;
+const mockAdmins = [
+  {
+    id: "admin_001",
+    name: "Admin User",
+    email: "admin@example.com",
+    role: "super_admin",
+    lastLogin: "2025-01-21 08:30:00",
+  },
+  {
+    id: "admin_002",
+    name: "Support Admin",
+    email: "support@example.com",
+    role: "admin",
+    lastLogin: "2025-01-20 15:45:00",
+  },
+];
+
+export default function SettingsPage() {
+  // DigiByte Settings
+  const [dgbMode, setDgbMode] = useState(mockSettings.dgbMode);
+  const [rpcHost, setRpcHost] = useState(mockSettings.rpcHost);
+  const [rpcPort, setRpcPort] = useState(mockSettings.rpcPort);
+  const [rpcUsername, setRpcUsername] = useState(mockSettings.rpcUsername);
+  const [rpcPassword, setRpcPassword] = useState(mockSettings.rpcPassword);
+  const [confirmationsRequired, setConfirmationsRequired] = useState(
+    mockSettings.confirmationsRequired,
+  );
+  const [addressRotation, setAddressRotation] = useState(
+    mockSettings.addressRotation,
+  );
+  const [rpcStatus, setRpcStatus] = useState<
+    "testing" | "connected" | "failed" | null
+  >(null);
+
+  // Security Settings
+  const [sessionTimeout, setSessionTimeout] = useState(
+    mockSettings.sessionTimeout,
+  );
+  const [maxLoginAttempts, setMaxLoginAttempts] = useState(
+    mockSettings.maxLoginAttempts,
+  );
+  const [maxWithdrawalPerHour, setMaxWithdrawalPerHour] = useState(
+    mockSettings.maxWithdrawalPerHour,
+  );
+  const [maxApiCallsPerMinute, setMaxApiCallsPerMinute] = useState(
+    mockSettings.maxApiCallsPerMinute,
+  );
+
+  // Exam Settings
+  const [defaultExamDuration, setDefaultExamDuration] = useState(
+    mockSettings.defaultExamDuration,
+  );
+  const [defaultPassMark, setDefaultPassMark] = useState(
+    mockSettings.defaultPassMark,
+  );
+  const [allowExamRetakes, setAllowExamRetakes] = useState(
+    mockSettings.allowExamRetakes,
+  );
+  const [showAnswersAfterCompletion, setShowAnswersAfterCompletion] = useState(
+    mockSettings.showAnswersAfterCompletion,
+  );
+
+  // Admin Management
+  const [admins, setAdmins] = useState(mockAdmins);
+  const [showAddAdminModal, setShowAddAdminModal] = useState(false);
+  const [newAdminName, setNewAdminName] = useState("");
+  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [newAdminPassword, setNewAdminPassword] = useState("");
+  const [newAdminRole, setNewAdminRole] = useState<"admin" | "super_admin">(
+    "admin",
+  );
+
+  const [activeTab, setActiveTab] = useState<
+    "dgb" | "security" | "exam" | "admins"
+  >("dgb");
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Test RPC Connection
+  const handleTestConnection = async () => {
+    setRpcStatus("testing");
+    // Simulate API call
+    setTimeout(() => {
+      const isValid = rpcHost && rpcPort && rpcUsername && rpcPassword;
+      setRpcStatus(isValid ? "connected" : "failed");
+      setTimeout(() => setRpcStatus(null), 3000);
+    }, 2000);
+  };
+
+  // Save Settings
+  const handleSaveSettings = () => {
+    const settings = {
+      dgbMode,
+      rpcHost,
+      rpcPort,
+      rpcUsername,
+      rpcPassword,
+      confirmationsRequired,
+      addressRotation,
+      sessionTimeout,
+      maxLoginAttempts,
+      maxWithdrawalPerHour,
+      maxApiCallsPerMinute,
+      defaultExamDuration,
+      defaultPassMark,
+      allowExamRetakes,
+      showAnswersAfterCompletion,
+    };
+
+    console.log("Saving settings:", settings);
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+  };
+
+  // Add Admin
+  const handleAddAdmin = () => {
+    if (!newAdminName || !newAdminEmail || !newAdminPassword) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    const newAdmin = {
+      id: `admin_${Date.now()}`,
+      name: newAdminName,
+      email: newAdminEmail,
+      role: newAdminRole,
+      lastLogin: "Never",
+    };
+
+    setAdmins([...admins, newAdmin]);
+    setShowAddAdminModal(false);
+    setNewAdminName("");
+    setNewAdminEmail("");
+    setNewAdminPassword("");
+    setNewAdminRole("admin");
+    alert("Admin added successfully");
+  };
+
+  // Remove Admin
+  const handleRemoveAdmin = (adminId: string) => {
+    if (confirm("Are you sure you want to remove this admin?")) {
+      setAdmins(admins.filter((a) => a.id !== adminId));
+      alert("Admin removed");
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-white">System Settings</h1>
+          <p className="text-gray-400 text-sm mt-1">
+            Configure platform settings and preferences
+          </p>
+        </div>
+        <button
+          onClick={handleSaveSettings}
+          className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition w-fit"
+        >
+          <FaSave /> Save All Changes
+        </button>
+      </div>
+
+      {/* Success Message */}
+      {saveSuccess && (
+        <div className="bg-green-900 border border-green-600 rounded-lg p-4 flex items-center gap-2">
+          <FaCheckCircle className="text-green-400 text-xl" />
+          <p className="text-green-400">Settings saved successfully!</p>
+        </div>
+      )}
+
+      {/* Tabs */}
+      <div className="darkCard p-2">
+        <div className="flex gap-2 overflow-x-auto">
+          <button
+            onClick={() => setActiveTab("dgb")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition whitespace-nowrap ${
+              activeTab === "dgb"
+                ? "bg-[#8B2E2E] text-white"
+                : "text-gray-400 hover:bg-gray-800"
+            }`}
+          >
+            <FaWallet /> DigiByte Settings
+          </button>
+          <button
+            onClick={() => setActiveTab("security")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition whitespace-nowrap ${
+              activeTab === "security"
+                ? "bg-[#8B2E2E] text-white"
+                : "text-gray-400 hover:bg-gray-800"
+            }`}
+          >
+            <FaShieldAlt /> Security
+          </button>
+          <button
+            onClick={() => setActiveTab("exam")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition whitespace-nowrap ${
+              activeTab === "exam"
+                ? "bg-[#8B2E2E] text-white"
+                : "text-gray-400 hover:bg-gray-800"
+            }`}
+          >
+            <FaCog /> Exam Settings
+          </button>
+          <button
+            onClick={() => setActiveTab("admins")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition whitespace-nowrap ${
+              activeTab === "admins"
+                ? "bg-[#8B2E2E] text-white"
+                : "text-gray-400 hover:bg-gray-800"
+            }`}
+          >
+            <FaUserShield /> Admin Management
+          </button>
+        </div>
+      </div>
+
+      {/* DigiByte Settings */}
+      {activeTab === "dgb" && (
+        <div className="space-y-6">
+          <div className="redCard p-6">
+            <h2 className="text-white text-lg font-semibold mb-4">
+              DigiByte Mode
+            </h2>
+
+            <div className="mb-6">
+              <label className="text-gray-400 text-sm mb-2 block">
+                Operating Mode
+              </label>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="dgbMode"
+                    value="mock"
+                    checked={dgbMode === "mock"}
+                    onChange={(e) => setDgbMode(e.target.value as any)}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-white">Mock (Testing)</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="dgbMode"
+                    value="live"
+                    checked={dgbMode === "live"}
+                    onChange={(e) => setDgbMode(e.target.value as any)}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-white">Live (Production)</span>
+                </label>
+              </div>
+              <p className="text-gray-500 text-xs mt-2">
+                {dgbMode === "mock"
+                  ? "Using simulated blockchain for testing"
+                  : "Connected to real DigiByte blockchain"}
+              </p>
+            </div>
+
+            {dgbMode === "live" && (
+              <>
+                <h3 className="text-white font-semibold mb-4 mt-6">
+                  RPC Connection
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="text-gray-400 text-sm mb-2 block">
+                      RPC Host
+                    </label>
+                    <input
+                      type="text"
+                      value={rpcHost}
+                      onChange={(e) => setRpcHost(e.target.value)}
+                      placeholder="localhost"
+                      className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-gray-400 text-sm mb-2 block">
+                      RPC Port
+                    </label>
+                    <input
+                      type="number"
+                      value={rpcPort}
+                      onChange={(e) => setRpcPort(Number(e.target.value))}
+                      placeholder="14022"
+                      className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-gray-400 text-sm mb-2 block">
+                      RPC Username
+                    </label>
+                    <input
+                      type="text"
+                      value={rpcUsername}
+                      onChange={(e) => setRpcUsername(e.target.value)}
+                      placeholder="username"
+                      className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-gray-400 text-sm mb-2 block">
+                      RPC Password
+                    </label>
+                    <input
+                      type="password"
+                      value={rpcPassword}
+                      onChange={(e) => setRpcPassword(e.target.value)}
+                      placeholder="password"
+                      className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={handleTestConnection}
+                  disabled={rpcStatus === "testing"}
+                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
+                >
+                  {rpcStatus === "testing" ? (
+                    <>Testing Connection...</>
+                  ) : (
+                    <>
+                      <FaCog /> Test Connection
+                    </>
+                  )}
+                </button>
+
+                {rpcStatus === "connected" && (
+                  <div className="mt-4 bg-green-900 border border-green-600 rounded-lg p-3 flex items-center gap-2">
+                    <FaCheckCircle className="text-green-400" />
+                    <p className="text-green-400 text-sm">
+                      Connection successful!
+                    </p>
+                  </div>
+                )}
+
+                {rpcStatus === "failed" && (
+                  <div className="mt-4 bg-red-900 border border-red-600 rounded-lg p-3 flex items-center gap-2">
+                    <FaExclamationCircle className="text-red-400" />
+                    <p className="text-red-400 text-sm">
+                      Connection failed. Check credentials.
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          <div className="redCard p-6">
+            <h2 className="text-white text-lg font-semibold mb-4">
+              Blockchain Settings
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Confirmations Required
+                </label>
+                <input
+                  type="number"
+                  value={confirmationsRequired}
+                  onChange={(e) =>
+                    setConfirmationsRequired(Number(e.target.value))
+                  }
+                  min="1"
+                  max="20"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+                <p className="text-gray-500 text-xs mt-1">
+                  Number of blockchain confirmations before crediting deposits
+                </p>
+              </div>
+
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Address Rotation
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer mt-2">
+                  <input
+                    type="checkbox"
+                    checked={addressRotation}
+                    onChange={(e) => setAddressRotation(e.target.checked)}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-white">
+                    Enable automatic address rotation
+                  </span>
+                </label>
+                <p className="text-gray-500 text-xs mt-1">
+                  Generate new deposit addresses for better privacy
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Security Settings */}
+      {activeTab === "security" && (
+        <div className="space-y-6">
+          <div className="redCard p-6">
+            <h2 className="text-white text-lg font-semibold mb-4">
+              Session Management
+            </h2>
+
+            <div className="mb-4">
+              <label className="text-gray-400 text-sm mb-2 block">
+                Session Timeout (minutes)
+              </label>
+              <input
+                type="number"
+                value={sessionTimeout}
+                onChange={(e) => setSessionTimeout(Number(e.target.value))}
+                min="5"
+                max="120"
+                className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+              />
+              <p className="text-gray-500 text-xs mt-1">
+                Users will be logged out after this period of inactivity
+              </p>
+            </div>
+          </div>
+
+          <div className="redCard p-6">
+            <h2 className="text-white text-lg font-semibold mb-4">
+              Rate Limiting
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Max Login Attempts (per hour)
+                </label>
+                <input
+                  type="number"
+                  value={maxLoginAttempts}
+                  onChange={(e) => setMaxLoginAttempts(Number(e.target.value))}
+                  min="1"
+                  max="20"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Max Withdrawals (per hour)
+                </label>
+                <input
+                  type="number"
+                  value={maxWithdrawalPerHour}
+                  onChange={(e) =>
+                    setMaxWithdrawalPerHour(Number(e.target.value))
+                  }
+                  min="1"
+                  max="20"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Max API Calls (per minute)
+                </label>
+                <input
+                  type="number"
+                  value={maxApiCallsPerMinute}
+                  onChange={(e) =>
+                    setMaxApiCallsPerMinute(Number(e.target.value))
+                  }
+                  min="10"
+                  max="1000"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Exam Settings */}
+      {activeTab === "exam" && (
+        <div className="space-y-6">
+          <div className="redCard p-6">
+            <h2 className="text-white text-lg font-semibold mb-4">
+              Default Exam Settings
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Default Exam Duration (minutes)
+                </label>
+                <input
+                  type="number"
+                  value={defaultExamDuration}
+                  onChange={(e) =>
+                    setDefaultExamDuration(Number(e.target.value))
+                  }
+                  min="15"
+                  max="240"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Default Pass Mark (%)
+                </label>
+                <input
+                  type="number"
+                  value={defaultPassMark}
+                  onChange={(e) => setDefaultPassMark(Number(e.target.value))}
+                  min="0"
+                  max="100"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+            </div>
+
+            <h3 className="text-white font-semibold mb-4">Exam Behavior</h3>
+
+            <div className="space-y-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={allowExamRetakes}
+                  onChange={(e) => setAllowExamRetakes(e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <div>
+                  <span className="text-white">Allow Exam Retakes</span>
+                  <p className="text-gray-500 text-xs">
+                    Users can retake exams if they fail
+                  </p>
+                </div>
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showAnswersAfterCompletion}
+                  onChange={(e) =>
+                    setShowAnswersAfterCompletion(e.target.checked)
+                  }
+                  className="w-4 h-4"
+                />
+                <div>
+                  <span className="text-white">
+                    Show Correct Answers After Completion
+                  </span>
+                  <p className="text-gray-500 text-xs">
+                    Display correct answers to users after they submit the exam
+                  </p>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Management */}
+      {activeTab === "admins" && (
+        <div className="space-y-6">
+          <div className="redCard p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-white text-lg font-semibold">Admin Users</h2>
+              <button
+                onClick={() => setShowAddAdminModal(true)}
+                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition"
+              >
+                <FaPlus /> Add Admin
+              </button>
+            </div>
+
+            {/* Admins List - Mobile */}
+            <div className="lg:hidden space-y-3">
+              {admins.map((admin) => (
+                <div key={admin.id} className="darkCard rounded-lg p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 className="text-white font-semibold">{admin.name}</h3>
+                      <p className="text-gray-400 text-xs">{admin.email}</p>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        admin.role === "super_admin"
+                          ? "bg-purple-600 text-white"
+                          : "bg-blue-600 text-white"
+                      }`}
+                    >
+                      {admin.role === "super_admin" ? "Super Admin" : "Admin"}
+                    </span>
+                  </div>
+                  <p className="text-gray-500 text-xs mb-3">
+                    Last login: {admin.lastLogin}
+                  </p>
+                  {admin.role !== "super_admin" && (
+                    <button
+                      onClick={() => handleRemoveAdmin(admin.id)}
+                      className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs transition"
+                    >
+                      <FaTrash /> Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Admins List - Desktop */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full">
+                <thead className="darkCard">
+                  <tr>
+                    <th className="text-left text-gray-400 font-medium py-3 px-4">
+                      Name
+                    </th>
+                    <th className="text-left text-gray-400 font-medium py-3 px-4">
+                      Email
+                    </th>
+                    <th className="text-center text-gray-400 font-medium py-3 px-4">
+                      Role
+                    </th>
+                    <th className="text-left text-gray-400 font-medium py-3 px-4">
+                      Last Login
+                    </th>
+                    <th className="text-center text-gray-400 font-medium py-3 px-4">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {admins.map((admin) => (
+                    <tr
+                      key={admin.id}
+                      className="border-t border-gray-800 hover:bg-gray-800 transition"
+                    >
+                      <td className="py-3 px-4 text-white font-medium">
+                        {admin.name}
+                      </td>
+                      <td className="py-3 px-4 text-gray-300">{admin.email}</td>
+                      <td className="py-3 px-4 text-center">
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs ${
+                            admin.role === "super_admin"
+                              ? "bg-purple-600 text-white"
+                              : "bg-blue-600 text-white"
+                          }`}
+                        >
+                          {admin.role === "super_admin"
+                            ? "Super Admin"
+                            : "Admin"}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-gray-300 text-sm">
+                        {admin.lastLogin}
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        {admin.role !== "super_admin" ? (
+                          <button
+                            onClick={() => handleRemoveAdmin(admin.id)}
+                            className="p-2 bg-red-600 hover:bg-red-700 text-white rounded transition"
+                            title="Remove Admin"
+                          >
+                            <FaTrash />
+                          </button>
+                        ) : (
+                          <span className="text-gray-500 text-sm">
+                            Protected
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Admin Modal */}
+      {showAddAdminModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="darkCard p-6 max-w-md w-full">
+            <h2 className="text-white text-xl font-bold mb-4">Add New Admin</h2>
+
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Name *
+                </label>
+                <input
+                  type="text"
+                  value={newAdminName}
+                  onChange={(e) => setNewAdminName(e.target.value)}
+                  placeholder="Admin name"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  value={newAdminEmail}
+                  onChange={(e) => setNewAdminEmail(e.target.value)}
+                  placeholder="admin@example.com"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Password *
+                </label>
+                <input
+                  type="password"
+                  value={newAdminPassword}
+                  onChange={(e) => setNewAdminPassword(e.target.value)}
+                  placeholder="Secure password"
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-400 text-sm mb-2 block">
+                  Role *
+                </label>
+                <select
+                  value={newAdminRole}
+                  onChange={(e) => setNewAdminRole(e.target.value as any)}
+                  className="w-full fadeInput rounded-lg px-4 py-2 text-white"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="super_admin">Super Admin</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  setShowAddAdminModal(false);
+                  setNewAdminName("");
+                  setNewAdminEmail("");
+                  setNewAdminPassword("");
+                }}
+                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddAdmin}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition"
+              >
+                Add Admin
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

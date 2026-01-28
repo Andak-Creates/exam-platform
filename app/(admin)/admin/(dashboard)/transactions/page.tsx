@@ -301,7 +301,7 @@ export default function TransactionsPage() {
       </div>
 
       {/* Filters */}
-      <div className="redCard p-4">
+      <div className="darkCard p-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="text-gray-400 text-sm mb-2 block">
